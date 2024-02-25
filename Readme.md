@@ -1,8 +1,8 @@
 <h1 align="center">Yolov9 Inference</h1>
 
-<center>
-    Jose Sarmiento | josedanielsarmiento219@gmail.com
-</center>
+
+<h3 align="center"> Jose Sarmiento | josedanielsarmiento219@gmail.com</h3>
+
 
 ## Resumen
 
