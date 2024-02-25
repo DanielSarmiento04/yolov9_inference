@@ -53,3 +53,17 @@ The next repository aims to provide a basic c++ script using std 17 over, to do 
     - TensorFlow Edge TPU
     - TensorFlow.js
     - PaddlePaddle
+
+```
+    pip install onnx
+```
+
+```bash
+    pip install onnxruntime
+```
+
+If you have Gpu, download the backend supported that
+
+```bash
+    pip install onnxruntime-gpu
+```
