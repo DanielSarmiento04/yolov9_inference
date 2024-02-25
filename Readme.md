@@ -20,6 +20,21 @@ The next repository aims to provide a basic c++ script using std 17 over, to do 
     - yolov9-c
     - yolov9-e
 
-    ```bash
-        python download_model.py  --model {MODEL_SELECTED}
-    ```
+
+```bash
+    python download_model.py  --model {MODEL_SELECTED}
+```
+
+2. Download de yolov9 repository to convert the Scripts
+
+```bash
+    git clone https://github.com/WongKinYiu/yolov9
+```
+
+- It recommended to create a virtual environment to do it, Use miniforge | anaconda | miniconda
+
+```
+    conda create --name yolov9 python=3.11 -y
+    conda activate yolov9
+    pip install -r ./yolov9/requirements.txt
+```
