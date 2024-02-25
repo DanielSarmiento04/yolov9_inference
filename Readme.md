@@ -19,3 +19,7 @@ The next repository aims to provide a basic c++ script using std 17 over, to do 
     - gelan-e
     - yolov9-c
     - yolov9-e
+
+    ```bash
+        python download_model.py  --model {MODEL_SELECTED}
+    ```
