@@ -67,3 +67,10 @@ If you have Gpu, download the backend supported that
 ```bash
     pip install onnxruntime-gpu
 ```
+
+Export, depending of your hardware, configure your device (gpu or cpu), view the oficial [export file](https://github.com/WongKinYiu/yolov9/blob/main/export.py)
+
+
+```bash
+    python export.py --weights ../yolov9-c.pt --include onnx 
+```
