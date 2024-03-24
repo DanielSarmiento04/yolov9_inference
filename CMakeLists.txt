@@ -10,7 +10,7 @@ find_package(OpenCV REQUIRED)
 
 # add the executable
 add_executable(${project_name} 
-        main.cpp
+        ./src/main.cpp
 )
 
 target_link_libraries(${project_name}  ${OpenCV_LIBS})
