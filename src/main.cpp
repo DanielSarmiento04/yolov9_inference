@@ -28,22 +28,16 @@ int main(int argc, char const *argv[])
     string MODEL_PATH = argv[2];
 
 
-
     // Load model
-
     Inference inference_management(MODEL_PATH, cv::Size(640, 640));
 
-
-    VideoCapture video_capture(SOURCE); // open the default camera
-
-
+    // open the camera selected
+    VideoCapture video_capture(SOURCE); 
     if (!video_capture.isOpened())
     {
         cout  << "Could not open the input video: " << SOURCE << endl;
         return -1;
     }
-
-
 
     for(;;)
     {
@@ -51,12 +45,14 @@ int main(int argc, char const *argv[])
         bool success = video_capture.read(frame);
         auto keyboard_pressed = waitKey(1);
 
-
         if (!success)
         {
             cout << "Cannot read  frame " << endl;
             break;
         }
+
+        // Process the frame
+        std::vector<Detection> results = inference_management.process(frame);
 
         if (keyboard_pressed == 'q')
         {

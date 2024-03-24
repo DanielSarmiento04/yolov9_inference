@@ -1,15 +1,21 @@
 #include "inference.h"
 
 /*
-    * This class is responsible for loading the ONNX model and running the inference
-    * 
-    * The model is loaded in the constructor and the inference is run in the proccess_image method
-    * 
-*/
-Inference::Inference(const std::string &onnxModelPath, const cv::Size &modelInputShape, const std::string &classesTxtFile, const bool &runWithCuda)
+ * This class is responsible for loading the ONNX model and running the inference
+ *
+ * The model is loaded in the constructor and the inference is run in the proccess_image method
+ *
+ */
+Inference::Inference(
+    const std::string &onnxModelPath,
+    const cv::Size &modelInputShape,
+    const VERSION &version,
+    const std::string &classesTxtFile,
+    const bool &runWithCuda)
 {
     modelPath = onnxModelPath;
     modelShape = modelInputShape;
+    versionModel = version;
     classesPath = classesTxtFile;
     cudaEnabled = runWithCuda;
 
@@ -24,7 +30,7 @@ std::vector<Detection> Inference::process(const cv::Mat &input)
         modelInput = formatToSquare(modelInput);
 
     cv::Mat blob;
-    cv::dnn::blobFromImage(modelInput, blob, 1.0/255.0, modelShape, cv::Scalar(), true, false);
+    cv::dnn::blobFromImage(modelInput, blob, 1.0 / 255.0, modelShape, cv::Scalar(), true, false);
     net.setInput(blob);
 
     std::vector<cv::Mat> outputs;
@@ -33,12 +39,8 @@ std::vector<Detection> Inference::process(const cv::Mat &input)
     int rows = outputs[0].size[1];
     int dimensions = outputs[0].size[2];
 
-    bool yolov8 = false;
-    // yolov5 has an output of shape (batchSize, 25200, 85) (Num classes + box[x,y,w,h] + confidence[c])
-    // yolov8 has an output of shape (batchSize, 84,  8400) (Num classes + box[x,y,w,h])
     if (dimensions > rows) // Check if the shape[2] is more than shape[1] (yolov8)
     {
-        yolov8 = true; // fix the version of Yolo
         rows = outputs[0].size[2];
         dimensions = outputs[0].size[1];
 
@@ -56,42 +58,13 @@ std::vector<Detection> Inference::process(const cv::Mat &input)
 
     for (int i = 0; i < rows; ++i)
     {
-        if (yolov8)
-        {
-            float *classes_scores = data+4;
 
-            cv::Mat scores(1, classes.size(), CV_32FC1, classes_scores);
-            cv::Point class_id;
-            double maxClassScore;
-
-            minMaxLoc(scores, 0, &maxClassScore, 0, &class_id);
-
-            if (maxClassScore > modelScoreThreshold)
-            {
-                confidences.push_back(maxClassScore);
-                class_ids.push_back(class_id.x);
-
-                float x = data[0];
-                float y = data[1];
-                float w = data[2];
-                float h = data[3];
-
-                int left = int((x - 0.5 * w) * x_factor);
-                int top = int((y - 0.5 * h) * y_factor);
-
-                int width = int(w * x_factor);
-                int height = int(h * y_factor);
-
-                boxes.push_back(cv::Rect(left, top, width, height));
-            }
-        }
-        else // yolov5
-        {
+        if (versionModel == VERSION::V5) {
             float confidence = data[4];
 
             if (confidence >= modelConfidenceThreshold)
             {
-                float *classes_scores = data+5;
+                float *classes_scores = data + 5;
 
                 cv::Mat scores(1, classes.size(), CV_32FC1, classes_scores);
                 cv::Point class_id;
@@ -118,6 +91,38 @@ std::vector<Detection> Inference::process(const cv::Mat &input)
                     boxes.push_back(cv::Rect(left, top, width, height));
                 }
             }
+        }
+        else if (versionModel == VERSION::V8) {
+            float *classes_scores = data + 4;
+
+            cv::Mat scores(1, classes.size(), CV_32FC1, classes_scores);
+            cv::Point class_id;
+            double maxClassScore;
+
+            minMaxLoc(scores, 0, &maxClassScore, 0, &class_id);
+
+            if (maxClassScore > modelScoreThreshold)
+            {
+                confidences.push_back(maxClassScore);
+                class_ids.push_back(class_id.x);
+
+                float x = data[0];
+                float y = data[1];
+                float w = data[2];
+                float h = data[3];
+
+                int left = int((x - 0.5 * w) * x_factor);
+                int top = int((y - 0.5 * h) * y_factor);
+
+                int width = int(w * x_factor);
+                int height = int(h * y_factor);
+
+                boxes.push_back(cv::Rect(left, top, width, height));
+            }
+        }
+        else if (versionModel == VERSION::V9) {
+
+
         }
 
         data += dimensions;
@@ -185,15 +190,14 @@ cv::Mat Inference::formatToSquare(const cv::Mat &source)
     return result;
 }
 
-
 /*
-    * This method is responsible for:
-    * 
-    * override the default classes with the classes from the file
-    * 
-    * The classes are hard-coded for default 
-    * please go to `/inference.h`
-*/
+ * This method is responsible for:
+ *
+ * override the default classes with the classes from the file
+ *
+ * The classes are hard-coded for default
+ * please go to `/inference.h`
+ */
 void Inference::loadClassesFromFile()
 {
 
