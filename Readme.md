@@ -89,7 +89,13 @@ Use Cmake file
 ```
 
 5. Execute
-```
+```bash
     ./yolov9_inference <Source> <Model path>
+```
+
+5.1 Example 
+
+```bash
+./yolov9_inference 1 ../yolov9-c.onnx  
 ```
 
