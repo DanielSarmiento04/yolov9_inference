@@ -90,6 +90,6 @@ Use Cmake file
 
 5. Execute
 ```
-    ./yolov9_inference
+    ./yolov9_inference <Source> <Model path>
 ```
 

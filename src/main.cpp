@@ -28,6 +28,12 @@ int main(int argc, char const *argv[])
     string MODEL_PATH = argv[2];
 
 
+
+    // Load model
+
+    Inference inference_management(MODEL_PATH, cv::Size(640, 640));
+
+
     VideoCapture video_capture(SOURCE); // open the default camera
 
 
