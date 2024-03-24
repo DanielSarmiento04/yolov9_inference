@@ -78,9 +78,18 @@ Export, depending of your hardware, configure your device (gpu or cpu), view the
 
 4. Compile
 
-Use command line 
+Use Cmake file
 
 ```bash
-    g++ -std=c++17 ./main.cpp -o main.out  -I {OPENCV_PATH}/include/opencv4/opencv2 -I {OPENCV_PATH}/include/opencv4 -L {OPENCV_PATH}/lib -l opencv_stitching -l opencv_superres -l opencv_videostab -l opencv_aruco -l opencv_bgsegm -l opencv_bioinspired -l opencv_ccalib -l opencv_dnn_objdetect -l opencv_dpm -l opencv_face -l opencv_fuzzy -l opencv_hfs -l opencv_img_hash -l opencv_line_descriptor -l opencv_optflow -l opencv_reg -l opencv_rgbd -l opencv_saliency -l opencv_stereo -l opencv_structured_light -l opencv_phase_unwrapping -l opencv_surface_matching -l opencv_tracking -l opencv_datasets -l opencv_dnn -l opencv_plot -l opencv_xfeatures2d -l opencv_shape -l opencv_video -l opencv_ml -l opencv_ximgproc -l opencv_xobjdetect -l opencv_objdetect -l opencv_calib3d -l opencv_features2d -l opencv_highgui -l opencv_videoio -l opencv_imgcodecs -l opencv_flann -l opencv_xphoto -l opencv_photo -l opencv_imgproc -l opencv_core -g 
+    mkdir build and cd build
+```
+
+```bash
+    cmake .. && make
+```
+
+5. Execute
+```
+    ./yolov9_inference
 ```
 
