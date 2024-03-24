@@ -4,6 +4,10 @@
 #include <opencv2/videoio.hpp> // Video write
 #include <string>
 
+// Custom extensions
+#include "ia/inference.h"
+
+// Using standard namespace
 using namespace cv;
 using namespace std;
 
@@ -14,14 +18,22 @@ const string window_name = "Camera";
 
 int main(int argc, char const *argv[])
 {
+    if (argc != 3)
+    {
+        std::cerr << "Usage: " << argv[0] << " <Source> <Model Path> \n";
+        exit(1);
+    }
 
-    int source = 1;
-    VideoCapture video_capture(source); // open the default camera
+    int SOURCE = atoi(argv[1]);
+    string MODEL_PATH = argv[2];
+
+
+    VideoCapture video_capture(SOURCE); // open the default camera
 
 
     if (!video_capture.isOpened())
     {
-        cout  << "Could not open the input video: " << source << endl;
+        cout  << "Could not open the input video: " << SOURCE << endl;
         return -1;
     }
 
