@@ -24,7 +24,7 @@ int main(int argc, char const *argv[])
         exit(1);
     }
 
-    int SOURCE = atoi(argv[1]);
+    int SOURCE        = atoi(argv[1]);
     string MODEL_PATH = argv[2];
 
 

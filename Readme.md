@@ -39,7 +39,7 @@ The next repository aims to provide a basic c++ script using std 17 over, to do 
     pip install -r ./yolov9/requirements.txt
 ```
 
-3. Export the model, note the model can export in the follow format, See mor in the export script
+3. Export the model, note the model can export in the follow format, See more in the [export script](https://github.com/WongKinYiu/yolov9/blob/main/export.py)
 
     - PyTorch
     - TorchScript
